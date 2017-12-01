@@ -1,32 +1,37 @@
-import React from 'react';
+import React from "react";
 import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
   View,
   Text
-} from 'react-native';
-import Page from './Page';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
+} from "react-native";
+import Page from "./Page";
+import { StackNavigator } from "react-navigation";
+import { createStore } from "redux";
+import { Provider, connect } from "react-redux";
 
+const actionTypes = { saveInput: "SAVE_INPUT" };
 
-const actionTypes = { saveInput: 'SAVE_INPUT'};
-
-const saveInputCreator = (value) => ({ type: actionTypes.saveInput, payload: value});
+const saveInputCreator = value => ({
+  type: actionTypes.saveInput,
+  payload: value
+});
 
 const initialState = {
-  currentName: '',
+  currentName: ""
 };
 
 const reducer = (state = initialState, action) => {
   console.log(state, action);
   switch (action.type) {
     case actionTypes.saveInput:
-      return state.currentName;
-  default:
-    return state;
-}
+      return {
+        currentName: action.payload
+      };
+    default:
+      return state;
+  }
 };
 
 const getCurrentName = () => state.currentName;
@@ -37,31 +42,30 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: '#25c8f9'
+    backgroundColor: "#25c8f9"
   },
   input: {
-    alignSelf: 'stretch',
-    color: 'white',
+    alignSelf: "stretch",
+    color: "white",
     paddingVertical: 5,
-    textAlign: 'center',
-    borderBottomColor: 'white',
+    textAlign: "center",
+    borderBottomColor: "white",
     borderBottomWidth: 2,
     marginBottom: 30,
     fontSize: 20
   },
   button: {
-    alignSelf: 'stretch',
-    backgroundColor: 'white',
+    alignSelf: "stretch",
+    backgroundColor: "white",
     paddingHorizontal: 6,
     paddingVertical: 13
   },
   buttonText: {
-    color: '#177aed',
+    color: "#177aed",
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: "center"
   }
 });
-
 
 class MainPage extends React.Component {
   render() {
@@ -81,19 +85,30 @@ class MainPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 const mapDispatchToProps = {
-  setName: saveInputCreator,
+  setName: saveInputCreator
 };
 
+const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(
+  MainPage
+);
 
-const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(MainPage);
+class GreetingsPage extends React.Component {
+  render() {
+    return <Page style={styles.page} />;
+  }
+}
+const Router = StackNavigator({
+  Main: { screen: ConnectedMainPage },
+  Greetings: { screen: GreetingsPage }
+});
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <ConnectedMainPage />
+        <Router />
       </Provider>
     );
   }
