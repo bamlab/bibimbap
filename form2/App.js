@@ -1,16 +1,17 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
-  TouchableOpacity
-} from "react-native";
-import Page from "./Page";
-import { createStore } from "redux";
-import { Provider, connect } from "react-redux";
-import { StackNavigator } from "react-navigation";
-const actionTypes = { saveInput: "SAVE_INPUT" };
+  TouchableOpacity,
+  KeyboardAvoidingView
+} from 'react-native';
+import Page from './Page';
+import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { StackNavigator } from 'react-navigation';
+const actionTypes = { saveInput: 'SAVE_INPUT' };
 
 const actionCreator = value => ({
   type: actionTypes.saveInput,
@@ -18,7 +19,7 @@ const actionCreator = value => ({
 });
 
 const initialState = {
-  currentName: ""
+  currentName: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,53 +42,59 @@ const store = createStore(reducer);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 16
   },
   title: {
     fontSize: 40,
-    textAlign: "center",
-    color: "#48c89a",
+    textAlign: 'center',
+    color: '#48c89a',
     marginBottom: 80
   },
   input: {
-    alignSelf: "stretch",
-    borderColor: "#979797",
+    alignSelf: 'stretch',
+    borderColor: 'white',
     borderBottomWidth: 1,
-    color: "black",
+    fontSize: 20,
+    color: 'white',
     paddingBottom: 7,
-    marginBottom: 33
+    marginBottom: 33,
+    textAlign: 'center'
   },
   button: {
     paddingHorizontal: 18,
     paddingVertical: 13,
-    alignSelf: "stretch",
-    borderRadius: 4,
-    backgroundColor: "#48c89a"
+    alignSelf: 'stretch',
+    backgroundColor: 'white'
   },
   buttonText: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "bold"
+    textAlign: 'center',
+    color: '#4a90e2',
+    fontSize: 20
   }
 });
 
 class MainPage extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>BIBIMBAP</Text>
-        <TextInput
-          placeholder="Entrez votre nom"
-          style={styles.input}
-          onChangeText={this.props.setName}
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>C'est bien mon nom</Text>
-        </TouchableOpacity>
-      </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="height"
+        keyboardVerticalOffset={20}
+      >
+        <Page style={styles.container}>
+          <TextInput
+            placeholder="Enter your name"
+            placeholderTextColor="white"
+            style={styles.input}
+            onChangeText={this.props.setName}
+          />
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Validate</Text>
+          </TouchableOpacity>
+        </Page>
+      </KeyboardAvoidingView>
     );
   }
 }
