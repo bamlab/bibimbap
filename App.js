@@ -9,13 +9,24 @@ import {
 import Page from './Page';
 import { createStore } from 'redux';
 
+const actionTypes = { saveInput: 'SAVE_INPUT'};
+
+const saveInputCreator = (value) => ({ type: actionTypes.saveInput, payload: value})
+
 const initialState = {
   currentName: '',
 };
 
 const reducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case actionTypes.saveInput:
+      return state.currentName;
+  default:
+    return state;
 }
+}
+
+const getCurrentName = () => state.currentName;
 
 const store = createStore(reducer);
 
