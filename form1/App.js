@@ -6,7 +6,20 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
+
+import { createStore } from 'redux';
 import Page from './Page';
+  
+
+const initialState = {
+  currentName: '',
+};
+
+const reducer = (state = intialState, action) => {
+  return state; 
+} 
+
+const store = createStore(reducer);
 
 export default class App extends React.Component {
   render() {
