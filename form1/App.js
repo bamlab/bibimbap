@@ -28,7 +28,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log(state, action);
   switch (action.type) {
     case actionTypes.SAVE_INPUT:
       return {
@@ -50,7 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: 'white',
   },
   label: {
     color: "#48c89a",
@@ -79,7 +79,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
     color: "#ffffff"
-  }
+  },
+  greeting: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#9b9b9b"
+  } 
 });
 
 class MainPage extends React.Component {
@@ -92,7 +97,7 @@ class MainPage extends React.Component {
           placeholder="Entrez votre nom"
           onChangeText={this.props.saveInput}
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Greeting')} >
           <Text style={styles.textButton}>C'est bien mon nom</Text>
         </TouchableOpacity>
       </Page>
@@ -111,13 +116,23 @@ const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(
 
 class GreetingPage extends React.Component {
   render() {
-    return <Page style={styles.page} />;
+    return <Page style={styles.page}>
+      <Text style={styles.label}>BONJOUR {this.props.name.toUpperCase()}  !</Text>
+      <Text style={styles.greeting}>Est-ce que votre journée se passe bien, monseigneur ?</Text>
+    </Page>;
   }
 }
 
+const mapStateToPropsGreeting = state => ({
+  name: getCurrentName(state),
+});
+
+const ConnectedGreetingPage = connect(mapStateToPropsGreeting)(
+  GreetingPage
+);
 const Router = StackNavigator({
   Main: { screen: ConnectedMainPage },
-  Greeting: { screen: GreetingPage }
+  Greeting: { screen: ConnectedGreetingPage }
 });
 
 export default class App extends React.Component {
