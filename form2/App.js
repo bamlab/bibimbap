@@ -7,6 +7,18 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Page from './Page';
+import { createStore } from 'redux';
+
+
+const initialState = {
+  currentName : '',
+}
+
+const reducer = (state = initialState, action) => {
+  return state;
+}
+
+const store = createStore(reducer);
 
 export default class App extends React.Component {
   render() {
