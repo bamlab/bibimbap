@@ -1,81 +1,81 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity
-} from 'react-native';
-import Page from './Page';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
+} from "react-native";
+import Page from "./Page";
+import { StackNavigator } from "react-navigation";
+import { createStore } from "redux";
+import { Provider, connect } from "react-redux";
 
+const actionTypes = { saveInput: "SAVE_INPUT" };
 
-const actionTypes = { saveInput: 'SAVE_INPUT'};
-
-const saveInputCreator = (value) => ({ type: actionTypes.saveInput, payload: value});
+const saveInputCreator = value => ({
+  type: actionTypes.saveInput,
+  payload: value
+});
 
 const intitialState = {
-  currentName: '',
+  currentName: ""
 };
 
 const reducer = (state = intitialState, action) => {
-  console.log(action)
+  console.log(action);
   switch (action.types) {
     case actionTypes.saveInput:
-      return {currentName: action.payload};
+      return { currentName: action.payload };
     default:
       return state;
   }
-}
+};
 
-const getCurrentName = (store) => store.currentName;
+const getCurrentName = store => store.currentName;
 
 const store = createStore(reducer);
 
-
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: 'black',
-    alignContent: 'center',
-    justifyContent: 'center',
+    backgroundColor: "black",
+    alignContent: "center",
+    justifyContent: "center",
     paddingHorizontal: 10
   },
   text: {
     fontSize: 20,
-    textAlign: 'center',
-    color: '#30d1e5',
+    textAlign: "center",
+    color: "#30d1e5",
     marginBottom: 62,
-    fontFamily: 'Menlo'
+    fontFamily: "Menlo"
   },
   input: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     borderBottomWidth: 2,
-    borderBottomColor: 'white',
+    borderBottomColor: "white",
     marginBottom: 25,
     paddingBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontFamily: 'Menlo',
-    color: 'white',
-
+    fontFamily: "Menlo",
+    color: "white"
   },
   button: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     borderRadius: 25,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     paddingVertical: 12
   },
   textInput: {
-    backgroundColor: 'transparent',
-    fontFamily: 'Menlo',
+    backgroundColor: "transparent",
+    fontFamily: "Menlo",
     fontSize: 20,
-    textAlign: 'center',
-    color: '#4a4a4a',
-    fontFamily: 'Menlo'
+    textAlign: "center",
+    color: "#4a4a4a",
+    fontFamily: "Menlo"
   }
 });
-
 
 class MainPage extends React.Component {
   render() {
@@ -96,18 +96,28 @@ class MainPage extends React.Component {
   }
 }
 
-const mapState = (state) => ({});
+const mapState = state => ({});
 const mapDispatch = {
-  setName: saveInputCreator,
+  setName: saveInputCreator
 };
 const ConnectedMainPage = connect(mapState, mapDispatch)(MainPage);
 
+class GreetingsPage extends React.Component {
+  render() {
+    return <Page style={styles.page} />;
+  }
+}
+
+const Router = StackNavigator({
+  Main: { screen: ConnectedMainPage },
+  Greetings: { screen: GreetingsPage }
+});
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <ConnectedMainPage/>
+        <Router />
       </Provider>
     );
   }
