@@ -4,8 +4,12 @@ import Page from './Page';
 
 export default class App extends React.Component {
   render() {
-    return <Page />;
+    return <Page style={styles.page} />;
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  page: {
+    paddingHorizontal: 16
+  }
+});
