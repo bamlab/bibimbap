@@ -1,25 +1,28 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity
-} from 'react-native';
-import Page from './Page';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
+} from "react-native";
+import Page from "./Page";
+import { createStore } from "redux";
+import { Provider, connect } from "react-redux";
+import { StackNavigator } from "react-navigation";
+const actionTypes = { saveInput: "SAVE_INPUT" };
 
-const actionTypes = { saveInput: 'SAVE_INPUT'};
-
-const actionCreator = (value) => ({ type: actionTypes.saveInput, payload: value});
+const actionCreator = value => ({
+  type: actionTypes.saveInput,
+  payload: value
+});
 
 const initialState = {
-  currentName : '',
-}
+  currentName: ""
+};
 
 const reducer = (state = initialState, action) => {
-  console.log(action, state)
+  console.log(action, state);
   switch (action.type) {
     case actionTypes.saveInput:
       return {
@@ -29,55 +32,58 @@ const reducer = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
-const getCurrentName = (store) => store.currentName;
+const getCurrentName = store => store.currentName;
 
 const store = createStore(reducer);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 16
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16
   },
   title: {
     fontSize: 40,
-    textAlign: 'center',
-    color: '#48c89a',
+    textAlign: "center",
+    color: "#48c89a",
     marginBottom: 80
   },
   input: {
-    alignSelf: 'stretch',
-    borderColor: '#979797',
+    alignSelf: "stretch",
+    borderColor: "#979797",
     borderBottomWidth: 1,
-    color: 'black',
+    color: "black",
     paddingBottom: 7,
     marginBottom: 33
   },
   button: {
     paddingHorizontal: 18,
     paddingVertical: 13,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     borderRadius: 4,
-    backgroundColor: '#48c89a'
+    backgroundColor: "#48c89a"
   },
   buttonText: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold'
+    textAlign: "center",
+    color: "white",
+    fontWeight: "bold"
   }
 });
-
 
 class MainPage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>BIBIMBAP</Text>
-        <TextInput placeholder="Entrez votre nom" style={styles.input} onChangeText = {this.props.setName}/>
+        <TextInput
+          placeholder="Entrez votre nom"
+          style={styles.input}
+          onChangeText={this.props.setName}
+        />
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>C'est bien mon nom</Text>
         </TouchableOpacity>
@@ -86,17 +92,39 @@ class MainPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 const mapDispatchToProps = {
-  setName: actionCreator,
+  setName: actionCreator
 };
-const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(MainPage);
+const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(
+  MainPage
+);
+
+class GreetingsPage extends React.Component {
+  render() {
+    return <View style={styles.container} />;
+  }
+}
+
+const Router = StackNavigator(
+  {
+    Main: { screen: ConnectedMainPage },
+    Greetings: { screen: GreetingsPage }
+  },
+  {
+    cardStyle: {
+      margin: 0,
+      marginHorizontal: 0,
+      padding: 0
+    }
+  }
+);
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <ConnectedMainPage />
+        <Router />
       </Provider>
     );
   }
