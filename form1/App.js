@@ -1,22 +1,60 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
 import Page from './Page';
 
 export default class App extends React.Component {
   render() {
     return (
-      <Page>
+      <Page style={styles.page}>
         <Text style={styles.label}>BIBIMBAP</Text>
-        <TextInput style={styles.input}/>
-        <TouchableOpacity style={styles.button}><Text style={styles.textButton}>C'est bien mon nom</Text></TouchableOpacity>
+        <TextInput style={styles.input} placeholder="Entrez votre nom" />
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.textButton}>C'est bien mon nom</Text>
+        </TouchableOpacity>
       </Page>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  label: {color: '#48c89a'},
-  input: {},
-  button: {},
-  textButton: {} 
+  page: {
+    flex: 1,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  label: {
+    color: '#48c89a',
+    fontSize: 40,
+    color: '#48c89a',
+    marginBottom: 80
+  },
+  input: {
+    color: '#9b9b9b',
+    borderBottomWidth: 1,
+    borderBottomColor: '#979797',
+    alignSelf: 'stretch',
+    marginVertical: 33,
+    paddingBottom: 5
+  },
+  button: {
+    backgroundColor: '#48c89a',
+    borderRadius: 4,
+    width: 288,
+    height: 41,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textButton: {
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+    color: '#ffffff'
+  }
 });
