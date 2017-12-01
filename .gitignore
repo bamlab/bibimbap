@@ -16,5 +16,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
 .DS_Store
 node_modules
+=======
+DS_Store
+>>>>>>> POSTE2 Form5
