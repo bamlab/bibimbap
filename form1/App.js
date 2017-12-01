@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import { createStore } from 'redux';
+import { connect, Provider } from 'react-redux';
 import Page from './Page';
 
 
@@ -23,6 +24,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+  console.log(state, action);
   switch (action.type) {
     case actionTypes.SAVE_INPUT:
       return {
@@ -31,27 +33,15 @@ const reducer = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
 export function getCurrentName(state) {
   return state.currentName;
 }
 
+
 const store = createStore(reducer);
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Page style={styles.page}>
-        <Text style={styles.label}>BIBIMBAP</Text>
-        <TextInput style={styles.input} placeholder="Entrez votre nom" />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.textButton}>C'est bien mon nom</Text>
-        </TouchableOpacity>
-      </Page>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   page: {
@@ -89,3 +79,37 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   }
 });
+
+class MainPage extends React.Component {
+  render() {
+    return (
+      <Page style={styles.page}>
+        <Text style={styles.label}>BIBIMBAP</Text>
+        <TextInput style={styles.input} placeholder="Entrez votre nom" onChangeText={this.props.saveInput}/>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.textButton}>C'est bien mon nom</Text>
+        </TouchableOpacity>
+      </Page>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+});
+const mapDispatchToProps = {
+  saveInput,
+};
+
+
+const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(MainPage);
+
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+       <ConnectedMainPage />
+      </Provider>
+    );
+  }
+}
