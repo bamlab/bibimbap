@@ -90,7 +90,10 @@ class MainPage extends React.Component {
             style={styles.input}
             onChangeText={this.props.setName}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Greetings')}
+            style={styles.button}
+          >
             <Text style={styles.buttonText}>Validate</Text>
           </TouchableOpacity>
         </Page>
