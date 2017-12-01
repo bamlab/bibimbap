@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import Page from './Page';
 import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
+
 
 const actionTypes = { saveInput: 'SAVE_INPUT'};
 
@@ -18,6 +20,7 @@ const intitialState = {
 };
 
 const reducer = (state = intitialState, action) => {
+  console.log(action)
   switch (action.types) {
     case actionTypes.saveInput:
       return {currentName: action.payload};
@@ -28,25 +31,8 @@ const reducer = (state = intitialState, action) => {
 
 const getCurrentName = (store) => store.currentName;
 
-const store = createStore(reducer); 
+const store = createStore(reducer);
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Page style={styles.page}>
-        <Text style={styles.text}>BIBIMBAP</Text>
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="white"
-          placeholder="Enter your name"
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.textInput}> Sign In </Text>
-        </TouchableOpacity>
-      </Page>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   page: {
@@ -70,7 +56,9 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     textAlign: 'center',
     fontSize: 20,
-    fontFamily: 'Menlo'
+    fontFamily: 'Menlo',
+    color: 'white',
+
   },
   button: {
     alignSelf: 'stretch',
@@ -81,10 +69,46 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'transparent',
     fontFamily: 'Menlo',
-
     fontSize: 20,
     textAlign: 'center',
     color: '#4a4a4a',
     fontFamily: 'Menlo'
   }
 });
+
+
+class MainPage extends React.Component {
+  render() {
+    return (
+      <Page style={styles.page}>
+        <Text style={styles.text}>BIBIMBAP</Text>
+        <TextInput
+          style={styles.input}
+          placeholderTextColor="white"
+          placeholder="Enter your name"
+          onChangeText={this.props.setName}
+        />
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.textInput}> Sign In </Text>
+        </TouchableOpacity>
+      </Page>
+    );
+  }
+}
+
+const mapState = (state) => ({});
+const mapDispatch = {
+  setName: saveInputCreator,
+};
+const ConnectedMainPage = connect(mapState, mapDispatch)(MainPage);
+
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <ConnectedMainPage/>
+      </Provider>
+    );
+  }
+}
